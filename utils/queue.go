@@ -1,57 +1,51 @@
 package utils
 
-import (
-	"container/heap"
-	"os"
-	"regexp"
-)
+import "container/heap"
 
 // ========================
-// FILES IO
+// FIFO QUEUE
 // ========================
-func ReadFile(title string) string {
-	data, err := os.ReadFile(title)
-	if err != nil {
-		panic("Error reading file")
-	}
-	return string(data)
+type Queue[T comparable] []T
+
+func (q *Queue[T]) Push(value T) {
+	(*q) = append((*q), value)
+}
+func (q *Queue[T]) Peek() T {
+	return (*q)[0]
+}
+func (q *Queue[T]) Pop() T {
+	popped := (*q)[0]
+	(*q) = (*q)[1:]
+	return popped
 }
 
-// ========================
-// STRINGS
-// ========================
-func QuickMatch(str, pattern string) []string {
-	re := regexp.MustCompile(pattern)
-	return re.FindAllString(str, -1)
+func (q *Queue[T]) IsEmpty() bool {
+	return len(*q) == 0
 }
 
 // ========================
 // PRIORITY QUEUE
 // ========================
-
 type PriorityQueue[T any] struct {
-	items []T
-	less  func(a, b T) bool
+	items  []T
+	sorter func(a, b T) bool
 }
 
 func NewPriorityQueue[T any](less func(a, b T) bool) *PriorityQueue[T] {
-	return &PriorityQueue[T]{less: less}
+	return &PriorityQueue[T]{sorter: less}
 }
-
 func (pq PriorityQueue[T]) Len() int {
 	return len(pq.items)
 }
 func (pq PriorityQueue[T]) Less(i, j int) bool {
-	return pq.less(pq.items[i], pq.items[j])
+	return pq.sorter(pq.items[i], pq.items[j])
 }
 func (pq PriorityQueue[T]) Swap(i, j int) {
 	pq.items[i], pq.items[j] = pq.items[j], pq.items[i]
 }
-
 func (pq *PriorityQueue[T]) Push(x any) {
 	pq.items = append(pq.items, x.(T))
 }
-
 func (pq *PriorityQueue[T]) Pop() any {
 	old := pq.items
 	n := len(old)
@@ -60,15 +54,16 @@ func (pq *PriorityQueue[T]) Pop() any {
 	return item
 }
 
-// helper methods
-func (pq *PriorityQueue[T]) PushItem(item T) {
+// Public Helpers
+func (pq *PriorityQueue[T]) Add(item T) {
 	heap.Push(pq, item)
 }
-
-func (pq *PriorityQueue[T]) PopItem() T {
+func (pq *PriorityQueue[T]) Peek() T {
+	return pq.items[0]
+}
+func (pq *PriorityQueue[T]) Remove() T {
 	return heap.Pop(pq).(T)
 }
-
 func (pq *PriorityQueue[T]) IsEmpty() bool {
-	return len(pq.items) == 0
+	return pq.Len() == 0
 }

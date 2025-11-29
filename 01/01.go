@@ -1,12 +1,5 @@
 package day01
 
 func Solve(file string, part int) int {
-	_ := ParseInput(file)
-
-	switch part {
-	case 1:
-		return I()
-	}
-
 	return 0
 }

@@ -1,4 +1,4 @@
-package quest01_test
+package day01_test
 
 import (
 	"testing"
