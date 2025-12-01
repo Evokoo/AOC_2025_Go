@@ -25,8 +25,7 @@ func main() {
 	fileList := []File{
 		{fileName: "example_I.txt", content: "", open: true},
 		{fileName: "example_II.txt", content: "", open: false},
-		{fileName: "input_I.txt", content: "", open: true},
-		{fileName: "input_II.txt", content: "", open: false},
+		{fileName: "input.txt", content: "", open: true},
 		{fileName: fmt.Sprintf("%s_suite_test.go", day), content: loadTemplate("cmd/generate/testSuite.tmpl", day), open: false},
 		{fileName: fmt.Sprintf("%s_test.go", day), content: loadTemplate("cmd/generate/test.tmpl", day), open: true},
 		{fileName: fmt.Sprintf("%s_logic.go", day), content: loadTemplate("cmd/generate/logic.tmpl", day), open: true},
