@@ -9,3 +9,10 @@ func Abs(n int) int {
 	}
 	return n
 }
+
+// ========================
+// CEIL
+// ========================
+func Ceil(a, b int) int {
+	return (a + b - 1) / b
+}
