@@ -16,3 +16,18 @@ func Abs(n int) int {
 func Ceil(a, b int) int {
 	return (a + b - 1) / b
 }
+
+// ========================
+// POWER
+// ========================
+func Pow(base, exp int) int {
+	result := 1
+	for exp > 0 {
+		if exp&1 == 1 {
+			result *= base
+		}
+		base *= base
+		exp >>= 1
+	}
+	return result
+}
