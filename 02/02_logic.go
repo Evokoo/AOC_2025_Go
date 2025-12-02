@@ -1,6 +1,8 @@
 package day02
 
 import (
+	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -41,6 +43,38 @@ func Repeats(n int) bool {
 	}
 
 	return true
+}
+
+// ========================
+// PART II
+// ========================
+func II(pairs [][2]int) int {
+	sum := 0
+
+	for _, pair := range pairs {
+		start, end := pair[0], pair[1]
+
+		for i := start; i <= end; i++ {
+			if ContainsPattern(i) {
+				sum += i
+			}
+		}
+	}
+
+	return sum
+}
+
+func ContainsPattern(n int) bool {
+	s := strconv.Itoa(n)
+	l := len(s)
+
+	for i := 0; i <= l/2; i++ {
+		re := regexp.MustCompile(fmt.Sprintf("^(%s)+$", s[0:i]))
+		if re.MatchString(s) {
+			return true
+		}
+	}
+	return false
 }
 
 // ========================
