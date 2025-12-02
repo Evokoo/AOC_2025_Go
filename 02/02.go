@@ -5,9 +5,9 @@ func Solve(file string, part int) int {
 
 	switch part {
 	case 1:
-		return I(pairs)
+		return I(pairs, part)
 	case 2:
-		return II(pairs)
+		return I(pairs, part)
 	}
 	return 0
 }

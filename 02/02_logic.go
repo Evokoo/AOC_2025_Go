@@ -1,8 +1,6 @@
 package day02
 
 import (
-	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -10,16 +8,23 @@ import (
 )
 
 // ========================
-// PART I
+// PART I && PART II
 // ========================
-func I(pairs [][2]int) int {
+func I(pairs [][2]int, part int) int {
 	sum := 0
 
 	for _, pair := range pairs {
 		start, end := pair[0], pair[1]
 
 		for i := start; i <= end; i++ {
-			if Repeats(i) {
+			s := strconv.Itoa(i)
+			l := len(s)
+
+			if part == 1 && s[:l/2] == s[l/2:] {
+				sum += i
+			}
+
+			if part == 2 && HasPattern(s, l) {
 				sum += i
 			}
 		}
@@ -28,52 +33,24 @@ func I(pairs [][2]int) int {
 	return sum
 }
 
-func Repeats(n int) bool {
-	s := strconv.Itoa(n)
-	l := len(s)
-
-	if l%2 != 0 {
-		return false
-	}
-
-	for i := 0; i < l/2; i++ {
-		if s[i] != s[i+l/2] {
-			return false
+func HasPattern(s string, l int) bool {
+blocks:
+	for size := 1; size <= l/2; size++ {
+		if l%size != 0 {
+			continue
 		}
-	}
 
-	return true
-}
+		block := s[:size]
+		for i := size; i <= l-size; i += size {
+			nextBlock := s[i : i+size]
 
-// ========================
-// PART II
-// ========================
-func II(pairs [][2]int) int {
-	sum := 0
-
-	for _, pair := range pairs {
-		start, end := pair[0], pair[1]
-
-		for i := start; i <= end; i++ {
-			if ContainsPattern(i) {
-				sum += i
+			if nextBlock != block {
+				continue blocks
 			}
 		}
+		return true
 	}
 
-	return sum
-}
-
-func ContainsPattern(n int) bool {
-	s := strconv.Itoa(n)
-	l := len(s)
-
-	for i := 0; i <= l/2; i++ {
-		re := regexp.MustCompile(fmt.Sprintf("^(%s)+$", s[0:i]))
-		if re.MatchString(s) {
-			return true
-		}
-	}
 	return false
 }
 
