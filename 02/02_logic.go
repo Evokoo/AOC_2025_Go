@@ -23,7 +23,6 @@ func I(pairs [][2]int, part int) int {
 			if part == 1 && s[:l/2] == s[l/2:] {
 				sum += i
 			}
-
 			if part == 2 && HasPattern(s, l) {
 				sum += i
 			}
@@ -50,7 +49,6 @@ blocks:
 		}
 		return true
 	}
-
 	return false
 }
 
