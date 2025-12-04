@@ -15,10 +15,10 @@ type Test struct {
 }
 
 var tests = []Test{
-	{part: 1, file: "inputs/example_I.txt", target: -1},
-	// {part: 1, file: "inputs/input.txt", target: -1},
-	// {part: 2, file: "inputs/example_II.txt", target: -1},
-	// {part: 2, file: "inputs/input.txt", target: -1},
+	{part: 1, file: "inputs/example_I.txt", target: 13},
+	{part: 1, file: "inputs/input.txt", target: 1419},
+	{part: 2, file: "inputs/example_II.txt", target: 43},
+	{part: 2, file: "inputs/input.txt", target: 8739},
 }
 
 var _ = Describe("AOC 2025 - Day 04", func() {
