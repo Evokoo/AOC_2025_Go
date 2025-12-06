@@ -1,13 +1,11 @@
 package day06
 
 func Solve(file string, part int) int {
-	columns := ParseInput(file)
-
 	switch part {
 	case 1:
-		return I(columns)
+		return I(ParseInput(file))
 	case 2:
-		return II(columns)
+		return I(ParseInputII(file))
 	}
 	return 0
 }

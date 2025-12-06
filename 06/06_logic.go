@@ -1,7 +1,6 @@
 package day06
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -38,17 +37,6 @@ func (c Column) Solve() int {
 	return total
 }
 
-func (c Column) ConvertValues() {
-	// values := make([]int, 0, len(c.values))
-	// columns := make([]string, 0, len(c.values))
-
-	for _, value := range c.values {
-		s := fmt.Sprintf("%-4s", strconv.Itoa(value))
-		fmt.Println(s)
-	}
-
-}
-
 // ========================
 // PART I
 // ========================
@@ -68,10 +56,6 @@ func I(columns []Column) int {
 // ========================
 func II(columns []Column) int {
 	sum := 0
-
-	for _, column := range columns {
-		column.ConvertValues()
-	}
 
 	return sum
 }
@@ -95,6 +79,43 @@ func ParseInput(file string) []Column {
 		}
 		for j, value := range values {
 			columns[j].values = append(columns[j].values, value)
+		}
+	}
+
+	for i, operator := range utils.QuickMatch(rows[length-1], `\S+`) {
+		columns[i].operator = operator
+	}
+
+	return columns
+}
+
+func ParseInputII(file string) []Column {
+	data := utils.ReadFile(file)
+	rows := strings.Split(data, "\n")
+	length := len(rows)
+
+	var columns []Column
+	var current Column
+	var digits strings.Builder
+
+	for i := range rows[0] {
+		for j := range length - 1 {
+			digits.WriteByte(rows[j][i])
+		}
+
+		s := strings.TrimSpace(digits.String())
+		if s == "" {
+			columns = append(columns, current)
+			current = Column{}
+		} else {
+			n, _ := strconv.Atoi(s)
+			current.values = append(current.values, n)
+		}
+
+		digits.Reset()
+
+		if i == len(rows[0])-1 {
+			columns = append(columns, current)
 		}
 	}
 
