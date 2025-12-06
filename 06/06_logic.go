@@ -39,7 +39,7 @@ func (c Column) Solve() int {
 // PART I
 // ========================
 
-func I(columns []Column) int {
+func GetTotal(columns []Column) int {
 	sum := 0
 	for _, column := range columns {
 		sum += column.Solve()
@@ -51,7 +51,7 @@ func I(columns []Column) int {
 // PARSER
 // ========================
 
-func ParseInput(file string) []Column {
+func ParseLTR(file string) []Column {
 	data := utils.ReadFile(file)
 	lines := strings.Split(data, "\n")
 	rows := len(lines)
@@ -76,7 +76,7 @@ func ParseInput(file string) []Column {
 	return columns
 }
 
-func ParseInputII(file string) []Column {
+func ParseTTB(file string) []Column {
 	data := utils.ReadFile(file)
 	lines := strings.Split(data, "\n")
 
