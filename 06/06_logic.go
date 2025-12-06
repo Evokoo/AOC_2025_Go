@@ -16,12 +16,10 @@ type Column struct {
 	operator string
 }
 
-func (c Column) Solve() int {
-	total := 0
+var INITIAL_VALUE = map[string]int{"+": 0, "*": 1}
 
-	if c.operator == "*" {
-		total = 1
-	}
+func (c Column) Solve() int {
+	total := INITIAL_VALUE[c.operator]
 
 	for _, value := range c.values {
 		switch c.operator {
@@ -43,20 +41,9 @@ func (c Column) Solve() int {
 
 func I(columns []Column) int {
 	sum := 0
-
 	for _, column := range columns {
 		sum += column.Solve()
 	}
-
-	return sum
-}
-
-// ========================
-// PART II
-// ========================
-func II(columns []Column) int {
-	sum := 0
-
 	return sum
 }
 
@@ -66,12 +53,12 @@ func II(columns []Column) int {
 
 func ParseInput(file string) []Column {
 	data := utils.ReadFile(file)
-	rows := strings.Split(data, "\n")
-	length := len(rows)
+	lines := strings.Split(data, "\n")
+	rows := len(lines)
 
 	var columns []Column
 
-	for i, row := range rows[:length-1] {
+	for i, row := range lines[:rows-1] {
 		values := utils.MatchInts(row)
 
 		if i == 0 {
@@ -82,7 +69,7 @@ func ParseInput(file string) []Column {
 		}
 	}
 
-	for i, operator := range utils.QuickMatch(rows[length-1], `\S+`) {
+	for i, operator := range utils.QuickMatch(lines[rows-1], `\S+`) {
 		columns[i].operator = operator
 	}
 
@@ -91,37 +78,49 @@ func ParseInput(file string) []Column {
 
 func ParseInputII(file string) []Column {
 	data := utils.ReadFile(file)
-	rows := strings.Split(data, "\n")
-	length := len(rows)
+	lines := strings.Split(data, "\n")
+
+	rows := len(lines)
+	cols := len(lines[0])
 
 	var columns []Column
 	var current Column
 	var digits strings.Builder
 
-	for i := range rows[0] {
-		for j := range length - 1 {
-			digits.WriteByte(rows[j][i])
+	addColumn := func() {
+		columns = append(columns, current)
+		current = Column{}
+	}
+
+	for i := range cols {
+		for j := range rows {
+			char := lines[j][i]
+
+			switch char {
+			case '+', '*':
+				current.operator = string(char)
+			case ' ':
+				continue
+			default:
+				digits.WriteByte(char)
+			}
 		}
 
-		s := strings.TrimSpace(digits.String())
-		if s == "" {
-			columns = append(columns, current)
-			current = Column{}
-		} else {
+		s := digits.String()
+
+		switch s {
+		case "":
+			addColumn()
+		default:
 			n, _ := strconv.Atoi(s)
 			current.values = append(current.values, n)
 		}
 
 		digits.Reset()
-
-		if i == len(rows[0])-1 {
-			columns = append(columns, current)
-		}
 	}
 
-	for i, operator := range utils.QuickMatch(rows[length-1], `\S+`) {
-		columns[i].operator = operator
-	}
+	//Add final column
+	addColumn()
 
 	return columns
 }
