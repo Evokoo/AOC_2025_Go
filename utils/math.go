@@ -1,5 +1,7 @@
 package utils
 
+import "math"
+
 // ========================
 // ABS
 // ========================
@@ -30,4 +32,16 @@ func Pow(base, exp int) int {
 		exp >>= 1
 	}
 	return result
+}
+
+// ========================
+// DISTANCE
+// ========================
+
+func EuclideanDistance3D(a, b [3]int) float64 {
+	dx := float64(b[0] - a[0])
+	dy := float64(b[1] - a[1])
+	dz := float64(b[2] - a[2])
+
+	return math.Sqrt(dx*dx + dy*dy + dz*dz)
 }
