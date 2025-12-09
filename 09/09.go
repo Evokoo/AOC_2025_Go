@@ -6,6 +6,8 @@ func Solve(file string, part int) int {
 	switch part {
 	case 1:
 		return I(tiles)
+	case 2:
+		return II(tiles)
 	}
 
 	return 0
