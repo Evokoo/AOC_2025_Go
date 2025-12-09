@@ -86,7 +86,7 @@ func (l Lookup) CompressX(x int) int {
 func (l Lookup) CompressY(y int) int {
 	return l.cy[y]
 }
-func (l Lookup) BuildGrid(points []*Tile, offset int) [][]string {
+func (l Lookup) BuildGrid(points []*Tile, offset int) [][]byte {
 	//Compress and offset points
 	cTiles := make([]Tile, len(points))
 	rows, cols := 0, 0
@@ -103,11 +103,11 @@ func (l Lookup) BuildGrid(points []*Tile, offset int) [][]string {
 	cTiles = append(cTiles, cTiles[0])
 
 	// Empty Grid
-	grid := make([][]string, rows)
+	grid := make([][]byte, rows)
 	for y := range grid {
-		grid[y] = make([]string, cols)
+		grid[y] = make([]byte, cols)
 		for x := range cols {
-			grid[y][x] = "#"
+			grid[y][x] = '#'
 		}
 	}
 
@@ -142,14 +142,13 @@ func (l Lookup) BuildGrid(points []*Tile, offset int) [][]string {
 	}
 
 	//Flood fill
-
 	queue := make(utils.Queue[[2]int], 0)
 	queue.Push([2]int{0, 0})
 
 	seen := make(utils.Set[[2]int])
 	seen.Add([2]int{0, 0})
 
-	grid[0][0] = "."
+	grid[0][0] = '.'
 
 	for !queue.IsEmpty() {
 		c := queue.Pop()
@@ -161,7 +160,7 @@ func (l Lookup) BuildGrid(points []*Tile, offset int) [][]string {
 				next := [2]int{nx, ny}
 
 				if !outline.Has(next) && !seen.Has(next) {
-					grid[ny][nx] = "."
+					grid[ny][nx] = '.'
 					seen.Add(next)
 					queue.Push(next)
 				}
@@ -214,7 +213,7 @@ func II(tiles []*Tile) int {
 			inside := true
 			for y := minY; y <= maxY && inside; y++ {
 				for x := minX; x <= maxX; x++ {
-					if grid[y][x] != "#" {
+					if grid[y][x] != '#' {
 						inside = false
 						break
 					}
