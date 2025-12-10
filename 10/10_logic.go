@@ -140,6 +140,7 @@ func (v VoltageState) IsComplete() bool {
 	}
 	return true
 }
+
 func (v VoltageState) NewState(sequence []int) (*VoltageState, bool) {
 	nextTarget := make([]int, len(v.target))
 	copy(nextTarget, v.target)
@@ -218,7 +219,7 @@ func II(machines []*Machine) int {
 		sum += machine.ConfigureVoltage()
 	}
 
-	return 0
+	return sum
 }
 
 // ========================
