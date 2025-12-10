@@ -6,6 +6,8 @@ func Solve(file string, part int) int {
 	switch part {
 	case 1:
 		return I(machines)
+	case 2:
+		return II(machines)
 	}
 
 	return 0
