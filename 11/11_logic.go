@@ -43,24 +43,45 @@ func (s *Server) GetDevice(id string) *Device {
 // PART I
 // ========================
 func I(server Server) int {
-	queue := make(utils.Queue[*Device], 0)
-	queue.Push(server.GetDevice("you"))
+	return CountPaths(server.GetDevice("you"), "out", make(map[string]int))
+}
 
-	paths := 0
-	for !queue.IsEmpty() {
-		cur := queue.Pop()
+// ========================
+// PART II
+// ========================
 
-		for device := range cur.connections {
-			if device.id == "out" {
-				paths++
-				continue
-			} else {
-				queue.Push(device)
-			}
-		}
+func II(server Server) int {
+	routeA := [][2]string{{"svr", "fft"}, {"fft", "dac"}, {"dac", "out"}}
+	routeB := [][2]string{{"svr", "dac"}, {"dac", "fft"}, {"fft", "out"}}
+
+	productA := 1
+	for _, pair := range routeA {
+		productA *= CountPaths(server.GetDevice(pair[0]), pair[1], make(map[string]int))
+	}
+	productB := 1
+	for _, pair := range routeB {
+		productB *= CountPaths(server.GetDevice(pair[0]), pair[1], make(map[string]int))
 	}
 
-	return paths
+	return productA + productB
+}
+
+func CountPaths(node *Device, target string, cache map[string]int) int {
+	if node.id == target {
+		return 1
+	}
+
+	if val, ok := cache[node.id]; ok {
+		return val
+	}
+
+	total := 0
+	for neighbor := range node.connections {
+		total += CountPaths(neighbor, target, cache)
+	}
+
+	cache[node.id] = total
+	return total
 }
 
 // ========================
